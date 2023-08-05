@@ -27,3 +27,4 @@ Set the following environment variables (or create a .env file) with the followi
 * `PORT`: Port the web app listens on, defaults to `3000`
 * `PUBLIC_URL`: Base URL of the web app, defaults to `http://localhost:PORT`
 * `SECRET`: Secret to sign and verify cookies, defaults to `secret`
+* `SESSION_LENGTH`: Session duration in minutes, defaults to `1440`
