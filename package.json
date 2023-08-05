@@ -7,7 +7,6 @@
     "tailwind": "tailwindcss -i ./src/tailwind.css -o ./public/stylesheets/style.css"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.4",
     "connect-pg-simple": "^9.0.0",
     "cookie-parser": "~1.4.4",
     "daisyui": "^3.5.1",

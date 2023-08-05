@@ -6,6 +6,7 @@ var router = express.Router();
     login page
 */
 router.get('/', async (req, res, next) => {
+    req.session.destroy();
     res.render('login', {
         title: 'Login',
         message: {
@@ -20,7 +21,6 @@ router.get('/', async (req, res, next) => {
     login form submission
 */
 router.post('/', async (req, res, next) => {
-    console.log(req.body);
     if (req.body.username && req.body.password) {
         req.session.user = {
             username: req.body.username,

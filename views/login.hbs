@@ -16,15 +16,19 @@
     <div class="basis-1/4">
         <form action="login" method="post" class="grid grid-cols-1 gap-6">
             <h1 class="text-3xl font-bold">Login</h1>
-            <label class="block">
-                <span class="text-gray-700">Username</span>
-                <input name="username" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="">
-            </label>
-            <label class="block">
-                <span class="text-gray-700">Password</span>
-                <input name="password" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="">
-            </label>
-            <button name="login" type="submit" class="btn btn-primary rounded-md">Login</button>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Username</span>
+                </label>
+                <input name="username" type="text" placeholder="" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Password</span>
+                </label>
+                <input name="password" type="password" placeholder="" class="input input-bordered" />
+            </div>
+            <button type="submit" class="btn btn-primary rounded-md">Login</button>
         </form>
     </div>
 </div>
