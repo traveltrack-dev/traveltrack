@@ -6,6 +6,7 @@ const logger = require('morgan');
 const routes = require('./routes');
 const package = require('./package.json');
 const dotenv = require('dotenv');
+const database = require('./database');
 
 // app config
 dotenv.config();
@@ -32,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// error handling
+// http error handling
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -40,8 +41,32 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-// start server
-app.listen(app.get('port'), () => {
-  console.log(`traveltrack ${package.version} listening on ${config.public_url}`)
+// database setup
+console.info('connecting to database...');
+database.connect(config).then(client => {
+  return client;
+}).catch((err) => {
+  console.error('failed to connect to database');
+  console.debug(err);
+  process.exit(1);
+}).then(client => {
+  console.info('connected to database, running migrations...');
+  return database.migrate(client);
+}).catch((err) => {
+  console.error('failed to run migrations');
+  console.debug(err);
+  process.exit(1);
+}).then(client => {
+  console.info('migrations complete, starting server...');
+
+  // start server
+  app.listen(app.get('port'), () => {
+
+    console.info(`start complete, traveltrack ${package.version} is now listening on ${config.public_url}`);
+
+  });
+}).catch((err) => {
+  console.error('failed to start server');
+  console.debug(err);
 });
 
