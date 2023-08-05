@@ -59,6 +59,7 @@ app.use((err, req, res, next) => {
       pool : db.pool,
       tableName : 'sessions'
     }),
+    name: 'traveltrack_session',
     saveUninitialized: false,
     secret: config.secret,
     resave: false,
