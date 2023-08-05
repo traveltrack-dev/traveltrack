@@ -1,6 +1,6 @@
 const url = require('url');
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* GET /logout */
 router.get('/', async (req, res, next) => {

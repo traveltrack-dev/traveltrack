@@ -847,6 +847,14 @@ html {
   --alert-bg-mix: hsl(var(--b1));
 }
 
+.alert-error {
+  border-color: hsl(var(--er) / 0.2);
+  --tw-text-opacity: 1;
+  color: hsl(var(--erc) / var(--tw-text-opacity));
+  --alert-bg: hsl(var(--er));
+  --alert-bg-mix: hsl(var(--b1));
+}
+
 .btm-nav > * .label {
   font-size: 1rem;
   line-height: 1.5rem;

@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const url = require('url');
 
 /*
     GET /login
@@ -12,6 +13,7 @@ router.get('/', async (req, res, next) => {
         message: {
             success: req.query.success || null,
             warning: req.query.warning || null,
+            error: req.query.error || null,
         }
     });
 });
@@ -28,9 +30,13 @@ router.post('/', async (req, res, next) => {
         };
         res.redirect('/plans');
     } else {
-        res.json({
-            'error': 'login failed, missing username or password',
-        }, 400);
+        res.redirect(url.format({
+            pathname: '/login',
+            query: {
+                'error': 'Please enter a username and password',
+                }
+            })
+        );
     }
 });
 

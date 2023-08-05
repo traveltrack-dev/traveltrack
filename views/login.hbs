@@ -11,6 +11,11 @@
             <span>{{message.warning}}</span>
         </div>
         {{/if}}
+        {{#if message.error }}
+        <div class="alert alert-error rounded-md">
+            <span>{{message.error}}</span>
+        </div>
+        {{/if}}
     </div>
     {{/if}}
     <div class="basis-1/4">
