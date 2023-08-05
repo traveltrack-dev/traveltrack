@@ -6,7 +6,13 @@ var router = express.Router();
     login page
 */
 router.get('/', async (req, res, next) => {
-    res.send('login form page here');
+    res.render('login', {
+        title: 'Login',
+        message: {
+            success: req.query.success || null,
+            warning: req.query.warning || null,
+        }
+    });
 });
 
 /*

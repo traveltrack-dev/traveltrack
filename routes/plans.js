@@ -6,7 +6,7 @@ var router = express.Router();
   plans list page  
 */
 router.get('/', function(req, res, next) {
-  res.send('plans go here');
+  res.send(`plans go here for session ${req.session.id} (${req.session.user.username})`);
 });
 
 module.exports = router;
