@@ -26,3 +26,4 @@ Set the following environment variables (or create a .env file) with the followi
 * `DB_PASSWORD`: Database password, defaults to `traveltrack`
 * `PORT`: Port the web app listens on, defaults to `3000`
 * `PUBLIC_URL`: Base URL of the web app, defaults to `http://localhost:PORT`
+* `SECRET`: Secret to sign and verify cookies, defaults to `secret`

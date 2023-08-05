@@ -7,6 +7,8 @@ const routes = require('./routes');
 const package = require('./package.json');
 const dotenv = require('dotenv');
 const database = require('./database');
+const expressSession = require('express-session');
+const pgSession = require('connect-pg-simple')(expressSession);
 
 // app config
 dotenv.config();
@@ -19,11 +21,12 @@ const config = {
   db_password: process.env.DB_PASSWORD || 'traveltrack',
   port: port,
   public_url: process.env.PUBLIC_URL || `http://localhost:${port}`,
+  secret: process.env.SECRET || 'secret',
+  session_length: process.env.SESSION_LENGTH || 1440,
 };
 
 // app setup
 const app = express();
-routes.setup(app);
 app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -49,6 +52,22 @@ app.use((err, req, res, next) => {
   await database.migrate(db.client);
 
   console.info('migrations complete, starting web app...');
+
+  // session setup
+  app.use(expressSession({
+    store: new pgSession({
+      pool : db.pool,
+      tableName : 'sessions'
+    }),
+    saveUninitialized: false,
+    secret: config.secret,
+    resave: false,
+    cookie: { maxAge: config.session_length * 60 * 1000 }
+  }));
+
+  // routes setup
+  routes.setup(app);
+
   app.listen(app.get('port'), async () => {
     console.info(`traveltrack ${package.version} is now listening on ${config.public_url}`);
   });

@@ -65,7 +65,7 @@ exports.migrate = async (client) => {
     if (newMigrations.length < 1) {
         console.info('no migrations to run');
     } else {
-        for (migration of migrations) {
+        for (const migration of newMigrations) {
             console.info(`running migration ${migration}...`);
             const migrationQuery = fs.readFileSync(`./database/${migration}`, 'utf8');
             await client.query(migrationQuery);
