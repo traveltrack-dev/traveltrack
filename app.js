@@ -41,32 +41,16 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-// database setup
-console.info('connecting to database...');
-database.connect(config).then(client => {
-  return client;
-}).catch((err) => {
-  console.error('failed to connect to database');
-  console.debug(err);
-  process.exit(1);
-}).then(client => {
+(async () => {
+  console.info('connecting to database...');
+  const db = await database.connect(config);
+
   console.info('connected to database, running migrations...');
-  return database.migrate(client);
-}).catch((err) => {
-  console.error('failed to run migrations');
-  console.debug(err);
-  process.exit(1);
-}).then(client => {
-  console.info('migrations complete, starting server...');
+  await database.migrate(db.client);
 
-  // start server
-  app.listen(app.get('port'), () => {
-
-    console.info(`start complete, traveltrack ${package.version} is now listening on ${config.public_url}`);
-
+  console.info('migrations complete, starting web app...');
+  app.listen(app.get('port'), async () => {
+    console.info(`traveltrack ${package.version} is now listening on ${config.public_url}`);
   });
-}).catch((err) => {
-  console.error('failed to start server');
-  console.debug(err);
-});
+})();
 

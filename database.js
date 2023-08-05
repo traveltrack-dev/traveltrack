@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+const { Client, Pool } = require('pg');
 const fs = require('fs');
 
 
@@ -11,11 +11,26 @@ exports.connect = async (config) => {
         password: config.db_password,
     });
     await client.connect();
-    const result = await client.query('SELECT 1 AS one;');
-    if (result.rows[0].one !== 1) {
+    const queryResult = await client.query('SELECT 1 AS one;');
+    const pool = new Pool({
+        host: config.db_host,
+        port: config.db_port,
+        database: config.db_name,
+        user: config.db_name,
+        password: config.db_password,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+    });
+    await pool.connect();
+    const poolQueryResult = await pool.query('SELECT 1 AS one;');
+    if (queryResult.rows[0].one !== 1 || poolQueryResult.rows[0].one !== 1) {
         throw new Error('failed to connect to database');
     } else {
-        return client;
+        return {
+            client: client,
+            pool: pool
+        };
     }
 };
 
@@ -61,5 +76,5 @@ exports.migrate = async (client) => {
             console.info(`migration ${migration} complete`);
         }
     }
-    return client;
+    return true;
 };
