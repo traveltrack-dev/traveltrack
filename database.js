@@ -91,7 +91,7 @@ exports.userRegister = async (pool, username, email, password) => {
 
 exports.userFetch = async (pool, username) => {
     const query = `
-        SELECT id, username, email, password FROM users WHERE username = $1;
+        SELECT id, username, email, password, timezone FROM users WHERE username = $1;
     `;
     const result = await pool.query(query, [username]);
     if (result.rows.length < 1) {
@@ -108,3 +108,11 @@ exports.userUpdateLastLogin = async (pool, id) => {
     await pool.query(query, [id]);
     return true;
 };
+
+exports.plansFetch = async (pool, userId) => {
+    const query = `
+        SELECT id, name, start_date, end_date FROM plans WHERE owner_id = $1;
+    `;
+    const result = await pool.query(query, [userId]);
+    return result.rows;
+}

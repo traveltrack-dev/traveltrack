@@ -1,0 +1,28 @@
+<div class="flex flex-row py-8 justify-center">
+    <div class="basis-1/2">
+        <h1 class="text-3xl font-bold">{{ title }}</h1>
+        <div class="overflow-x-auto">
+            <div class="table border-separate border-spacing-y-3">
+                <div class="table-header-group">
+                    <div class="table-row">
+                        {{#each results}}{{#if @first}}{{#each this.content}}<div class="table-cell text-left font-bold border-solid border-b-2 border-base-content">{{@key}}</div>{{/each}}{{/if}}{{/each}}
+                    </div>
+                </div>
+                <div class="table-row-group">
+                    {{#each results}}
+                    <a href="{{this.link}}" class="table-row">
+                            {{#each this.content}}
+                            {{#if @first}}
+                            <div class="table-cell font-bold border-solid">{{this}}</div>
+                            {{else}}
+                            <div class="table-cell border-solid">{{this}}</div>
+                            {{/if}}
+                            {{/each}}
+                    </a>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

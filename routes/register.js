@@ -43,11 +43,11 @@ module.exports = app => {
                 })
             );
         } else {
-            console.info(`registering user ${req.body.username}...`)
+            console.debug(`registering user ${req.body.username}...`)
             const hash = await argon2.hash(req.body.password);
             const db = app.get('db');
             const userId = await database.userRegister(db.pool, req.body.username, req.body.email, hash);
-            console.info(`registered user ${req.body.username} with id ${userId}`);
+            console.debug(`registered user ${req.body.username} with id ${userId}`);
             res.redirect(url.format({
                 pathname: '/login',
                 query: {

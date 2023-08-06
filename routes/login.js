@@ -28,7 +28,7 @@ module.exports = app => {
     */
     router.post('/', async (req, res, next) => {
         if (req.body.username && req.body.password) {
-            console.info(`logging in user ${req.body.username}...`);
+            console.debug(`logging in user ${req.body.username}...`);
             const db = app.get('db');
             const userData = await database.userFetch(db.pool, req.body.username);
             if (userData) {
@@ -38,14 +38,15 @@ module.exports = app => {
                     req.session.user = {
                         id: userData.id,
                         email: userData.email,
-                        username: userData.username
+                        username: userData.username,
+                        timezone: userData.timezone,
                     };
                     req.session.save(err => {
-                        console.info(`logged in user ${req.body.username} with id ${userData.id}`);
+                        console.debug(`logged in user ${req.body.username} with id ${userData.id}`);
                         res.redirect('/plans');
                     });
                 } else {
-                    console.info(`invalid password for user ${req.body.username}`);
+                    console.debug(`invalid password for user ${req.body.username}`);
                     res.redirect(url.format({
                         pathname: '/login',
                         query: {
@@ -55,7 +56,7 @@ module.exports = app => {
                     );
                 }
             } else {
-                console.info(`user ${req.body.username} not found`);
+                console.debug(`user ${req.body.username} not found`);
                 res.redirect(url.format({
                     pathname: '/login',
                     query: {

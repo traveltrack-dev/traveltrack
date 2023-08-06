@@ -623,6 +623,12 @@ html {
     --tw-text-opacity: 1;
     color: hsl(var(--bc) / var(--tw-text-opacity));
   }
+
+  .table tr.hover:hover,
+  .table tr.hover:nth-child(even):hover {
+    --tw-bg-opacity: 1;
+    background-color: hsl(var(--b2) / var(--tw-bg-opacity));
+  }
 }
 
 .btn {
@@ -818,6 +824,39 @@ html {
   transform: translateY(0) scale(1);
   z-index: 3;
   opacity: 1;
+}
+
+.table {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: var(--rounded-box, 1rem);
+}
+
+.table :where(.table-pin-rows thead tr) {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b1) / var(--tw-bg-opacity));
+}
+
+.table :where(.table-pin-rows tfoot tr) {
+  position: sticky;
+  bottom: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b1) / var(--tw-bg-opacity));
+}
+
+.table :where(.table-pin-cols tr th) {
+  position: sticky;
+  left: 0px;
+  right: 0px;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b1) / var(--tw-bg-opacity));
 }
 
 .toast {
@@ -1123,6 +1162,36 @@ html {
   }
 }
 
+.table :where(th, td) {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  vertical-align: middle;
+}
+
+.table tr.active,
+  .table tr.active:nth-child(even),
+  .table-zebra tbody tr:nth-child(even) {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b2) / var(--tw-bg-opacity));
+}
+
+.table :where(thead, tbody) :where(tr:not(:last-child)),
+    .table :where(thead, tbody) :where(tr:first-child:last-child) {
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-color: hsl(var(--b2) / var(--tw-border-opacity));
+}
+
+.table :where(thead, tfoot) {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: hsl(var(--bc) / 0.6);
+}
+
 .toast > * {
   animation: toast-pop 0.25s ease-out;
 }
@@ -1257,6 +1326,26 @@ html {
   display: flex;
 }
 
+.table {
+  display: table;
+}
+
+.table-cell {
+  display: table-cell;
+}
+
+.table-header-group {
+  display: table-header-group;
+}
+
+.table-row-group {
+  display: table-row-group;
+}
+
+.table-row {
+  display: table-row;
+}
+
 .grid {
   display: grid;
 }
@@ -1277,8 +1366,21 @@ html {
   width: 100vw;
 }
 
+.basis-1\/2 {
+  flex-basis: 50%;
+}
+
 .basis-1\/4 {
   flex-basis: 25%;
+}
+
+.border-separate {
+  border-collapse: separate;
+}
+
+.border-spacing-y-3 {
+  --tw-border-spacing-y: 0.75rem;
+  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
 }
 
 .grid-cols-1 {
@@ -1301,13 +1403,34 @@ html {
   gap: 1.5rem;
 }
 
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .rounded-md {
   border-radius: 0.375rem;
+}
+
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+
+.border-solid {
+  border-style: solid;
+}
+
+.border-base-content {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--bc) / var(--tw-border-opacity));
 }
 
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-3xl {
