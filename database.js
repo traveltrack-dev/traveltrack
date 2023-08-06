@@ -78,3 +78,33 @@ exports.migrate = async (client) => {
     }
     return true;
 };
+
+exports.userRegister = async (pool, username, email, password) => {
+    const query = `
+        INSERT INTO users (username, email, password)
+        VALUES ($1, $2, $3)
+        RETURNING id;
+    `;
+    const result = await pool.query(query, [username, email, password]);
+    return result.rows[0].id;
+};
+
+exports.userFetch = async (pool, username) => {
+    const query = `
+        SELECT id, username, email, password FROM users WHERE username = $1;
+    `;
+    const result = await pool.query(query, [username]);
+    if (result.rows.length < 1) {
+        return null;
+    } else {
+        return result.rows[0];
+    };
+};
+
+exports.userUpdateLastLogin = async (pool, id) => {
+    const query = `
+        UPDATE users SET last_login = NOW() WHERE id = $1;
+    `;
+    await pool.query(query, [id]);
+    return true;
+};

@@ -47,6 +47,7 @@ app.use((err, req, res, next) => {
 (async () => {
   console.info('connecting to database...');
   const db = await database.connect(config);
+  app.set('db', db)
 
   console.info('connected to database, running migrations...');
   await database.migrate(db.client);
