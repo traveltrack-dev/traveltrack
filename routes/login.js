@@ -38,10 +38,12 @@ module.exports = app => {
                     req.session.user = {
                         id: userData.id,
                         email: userData.email,
-                        username: userData.username,
+                        username: userData.username
                     };
-                    console.info(`logged in user ${req.body.username} with id ${userData.id}`);
-                    res.redirect('/plans');
+                    req.session.save(err => {
+                        console.info(`logged in user ${req.body.username} with id ${userData.id}`);
+                        res.redirect('/plans');
+                    });
                 } else {
                     console.info(`invalid password for user ${req.body.username}`);
                     res.redirect(url.format({
