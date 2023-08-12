@@ -116,3 +116,105 @@ exports.plansFetch = async (pool, userId) => {
     const result = await pool.query(query, [userId]);
     return result.rows;
 }
+
+exports.planFetch = async (pool, planId, userId) => {
+    const query_details = `
+        SELECT id, name, start_date, end_date, created_at, updated_at FROM plans WHERE id = $1 AND owner_id = $2;
+    `;
+    const result_details = await pool.query(query_details, [planId, userId]);
+    const query_bookings = `
+        SELECT
+            b.id booking_id,
+            p.id plan_id,
+            b.booking_date,
+            b.booking_code,
+            b.booking_price,
+            b.booking_currency,
+            o.name operator_name,
+            o.type operator_type,
+            o.website operator_website,
+            o.logo_data operator_logo_data,
+            o.logo_mime_type operator_logo_mime_type,
+            o.logo_filename operator_logo_filename
+        FROM
+            bookings b
+        JOIN
+            plans p ON b.plan_id = p.id
+        JOIN
+            operators o ON b.booking_operator_id = o.id
+        WHERE
+            b.plan_id = $1
+            AND p.owner_id = $2;
+    `;
+    const result_bookings = await pool.query(query_bookings, [planId, userId]);
+    return {
+        details: result_details.rows[0],
+        bookings: result_bookings.rows
+    };
+};
+
+exports.bookingFetch = async (pool, bookingId, userId) => {
+    const booking_details_query = `
+    SELECT
+        b.id id,
+        p.id plan_id,
+        b.booking_date,
+        b.booking_code,
+        b.booking_price,
+        b.booking_currency,
+        o.name operator_name,
+        o.type operator_type,
+        o.website operator_website,
+        o.logo_data operator_logo_data,
+        o.logo_mime_type operator_logo_mime_type,
+        o.logo_filename operator_logo_filename
+    FROM
+        bookings b
+    JOIN
+        plans p ON b.plan_id = p.id
+    JOIN
+        operators o ON b.booking_operator_id = o.id
+    WHERE
+        b.id = $1
+        AND p.owner_id = $2;
+    `;
+    const booking_details_result = await pool.query(booking_details_query, [bookingId, userId]);
+    const query_legs = `
+    SELECT
+        l.id leg_id,
+        b.id booking_id,
+        p.id plan_id,
+        l.type,
+        l.departure_time,
+        l.departure_name,
+        l.departure_iata_code,
+        l.arrival_time,
+        l.arrival_name,
+        l.arrival_iata_code,
+        l.trip_number,
+        o.name operator_name,
+        o.type operator_type,
+        o.website operator_website,
+        o.logo_data operator_logo_data,
+        o.logo_mime_type operator_logo_mime_type,
+        o.logo_filename operator_logo_filename
+    FROM
+        legs l
+    JOIN
+        bookings b ON l.booking_id = b.id
+    JOIN
+        plans p ON b.plan_id = p.id
+    JOIN
+        operators o ON l.operator_id = o.id
+    WHERE
+        l.booking_id = $1
+        AND p.owner_id = $2
+    ORDER BY
+        l.departure_time ASC;
+    `;
+    const result_legs = await pool.query(query_legs, [bookingId, userId]);
+    return {
+        details: booking_details_result.rows[0],
+        legs: result_legs.rows
+    };                  
+};

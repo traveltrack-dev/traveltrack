@@ -1,0 +1,12 @@
+<div class="flex flex-row py-8 justify-center">
+    <div class="basis-1/2">
+        <h1 class="text-3xl font-bold">{{ title }}</h1>
+        {{#if text}}
+        <p>{{ text }}</p>
+        {{/if}}
+        {{#each lines}}
+        <p>{{ this }}</p>
+        {{/each}}
+    </div>
+</div>
+
