@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const database = require('../database');
-const url = require('url');
 const { DateTime } = require("luxon");
-const { type } = require('os');
 
 module.exports = app => {
   /*
