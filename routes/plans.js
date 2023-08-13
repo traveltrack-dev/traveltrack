@@ -15,19 +15,22 @@ module.exports = app => {
     let plans = await database.plansFetch(db.pool, user.id);
     plans = plans.map(plan => {
       return {
-        content: {
-          "#": plan.id,
-          "Name": plan.name,
-          "Start": DateTime.fromJSDate(plan.start_date).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED),
-          "End": DateTime.fromJSDate(plan.end_date).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED),
-        },
+        header: plan.name,
+        text: [
+          `${DateTime.fromJSDate(plan.start_date).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED)} → ${DateTime.fromJSDate(plan.end_date).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED)}`,
+          plan.operators,
+        ],
         link: `/plans/${plan.id}`,
+        photo: {
+          data: plan.photo_data,
+          mimeType: plan.photo_mime_type,
+        }
       }
     });
     console.debug(`fetched ${plans.length} plans for user ${user.username} with id ${user.id}`)
-    res.render('table', {
+    res.render('list', {
       title: 'Plans',
-      results: plans,
+      items: plans,
     });
   });
 

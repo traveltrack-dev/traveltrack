@@ -111,7 +111,20 @@ exports.userUpdateLastLogin = async (pool, id) => {
 
 exports.plansFetch = async (pool, userId) => {
     const query = `
-        SELECT id, name, start_date, end_date FROM plans WHERE owner_id = $1;
+        SELECT
+            p.id,
+            p.name,
+            p.start_date,
+            p.end_date,
+            encode(p.photo_data, 'base64') photo_data,
+            p.photo_mime_type,
+            p.photo_filename,
+            string_agg(o.name, ', ') operators
+        FROM plans p
+        LEFT JOIN bookings b ON p.id = b.plan_id
+        LEFT JOIN operators o ON b.booking_operator_id = o.id
+        WHERE p.owner_id = $1
+        GROUP BY 1;
     `;
     const result = await pool.query(query, [userId]);
     return result.rows;
