@@ -17,6 +17,7 @@
     "express-session": "^1.17.3",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
+    "lucide": "^0.268.0",
     "luxon": "^3.3.0",
     "morgan": "~1.9.1",
     "pg": "^8.11.2",

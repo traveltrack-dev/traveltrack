@@ -18,8 +18,8 @@ module.exports = app => {
       return {
         header: plan.name,
         text: [
-          `${DateTime.fromISO(plan.start_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED)} → ${DateTime.fromISO(plan.end_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED)}`,
-          plan.operators,
+          `<div class="flex items-center"><i data-lucide="calendar-days" class="w-5 h-5 mr-1"></i> ${DateTime.fromISO(plan.start_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED)} - ${DateTime.fromISO(plan.end_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED)}</div>`,
+          `<div class="flex items-center"><i data-lucide="ticket" class="w-5 h-5 mr-1"></i> ${plan.operators} </div>`,
         ],
         link: `/plans/${plan.id}`,
         photo: {
@@ -41,19 +41,12 @@ module.exports = app => {
     const db = app.get('db');
     let plan = await database.planFetch(db.pool, req.params.planId, user.id);
     let lines = [];
-    for (const [key, value] of Object.entries(plan.details)) {
-      if (value instanceof Date) {
-        lines.push(`${key}: ${DateTime.fromJSDate(value).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED)}`);
-      } else {
-        lines.push(`${key}: ${value}`);
-      }
-    }
     let bookings = plan.bookings.map(booking => {
       return {
         content: {
           "#": booking.booking_id,
           "Booking": `${booking.operator_name} ${booking.booking_code}`,
-          "Booking Date": DateTime.fromJSDate(booking.booking_date).setZone(user.timezone).toLocaleString(DateTime.DATE_MED),
+          "Booking Date": DateTime.fromISO(booking.booking_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED),
           "Type": booking.operator_type,
           "Price": `${booking.booking_price} ${booking.booking_currency}`,
         },
@@ -73,13 +66,6 @@ module.exports = app => {
     const db = app.get('db');
     let booking = await database.bookingFetch(db.pool, req.params.bookingId, user.id);
     let lines = [];
-    for (const [key, value] of Object.entries(booking.details)) {
-      if (value instanceof Date) {
-        lines.push(`${key}: ${DateTime.fromJSDate(value).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED)}`);
-      } else {
-        lines.push(`${key}: ${value}`);
-      }
-    }
     let legs = booking.legs.map(leg => {
       return {
         content: {
@@ -88,8 +74,8 @@ module.exports = app => {
           "Operator": leg.operator_name,
           "Leg": leg.trip_number,
           "Route": `${(leg.departure_iata_code || leg.departure_name)} → ${(leg.arrival_iata_code || leg.arrival_name)}`,
-          "Departure": DateTime.fromJSDate(leg.departure_time).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED),
-          "Arrival": DateTime.fromJSDate(leg.arrival_time).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED),
+          "Departure": DateTime.fromISO(leg.departure_time, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED),
+          "Arrival": DateTime.fromISO(leg.arrival_time, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED),
         }
       };
     });

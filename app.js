@@ -36,6 +36,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// frontend dependencies
+app.use('/lucide', express.static(path.join(__dirname, 'node_modules/lucide/dist/umd')));
+
 // http error handling
 app.use((err, req, res, next) => {
   res.locals.message = err.message;

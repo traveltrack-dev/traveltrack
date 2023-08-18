@@ -3,12 +3,12 @@
         <div class="grid grid-cols-1 gap-4">
             <h1 class="text-3xl font-bold">{{title}}</h1>
             {{#each items}}
-            <{{#if this.link}}a href="{{ link }}"{{else}}div{{/if}} class="bg-white rounded-lg shadow-md p-4 flex items-start hover:bg-base-200 transition">
+            <{{#if this.link}}a href="{{ link }}"{{else}}div{{/if}} class="bg-white rounded-lg shadow-md p-4 flex items-start hover:bg-base-200 transition leading-8">
                 {{#if this.photo}}<img src="data:{{{ this.photo.mimeType }}};base64,{{{ this.photo.data }}}" alt="Photo for {{this.header}}" class="w-32 h-32 mr-4 rounded-md">{{/if}}
                 <div>
                     <h2 class="text-lg font-semibold">{{this.header}}</h2>
                     {{#each this.text}}
-                    <p class="text-base-content">{{this}}</p>
+                    <p class="text-base-content">{{{this}}}</p>
                     {{/each}}
                 </div>
             </{{#if this.link}}a{{else}}div{{/if}}>

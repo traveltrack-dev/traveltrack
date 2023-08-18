@@ -119,7 +119,7 @@ exports.plansFetch = async (pool, userId) => {
             encode(p.photo_data, 'base64') photo_data,
             p.photo_mime_type,
             p.photo_filename,
-            string_agg(o.name, ', ') operators
+            string_agg(DISTINCT o.name, ', ') operators
         FROM plans p
         LEFT JOIN bookings b ON p.id = b.plan_id
         LEFT JOIN operators o ON b.booking_operator_id = o.id
@@ -132,14 +132,14 @@ exports.plansFetch = async (pool, userId) => {
 
 exports.planFetch = async (pool, planId, userId) => {
     const query_details = `
-        SELECT id, name, start_date, end_date, created_at, updated_at FROM plans WHERE id = $1 AND owner_id = $2;
+        SELECT id, name, to_json(start_date) start_date, to_json(end_date), to_json(created_at) created_at, to_json(updated_at) updated_at FROM plans WHERE id = $1 AND owner_id = $2;
     `;
     const result_details = await pool.query(query_details, [planId, userId]);
     const query_bookings = `
         SELECT
             b.id booking_id,
             p.id plan_id,
-            b.booking_date,
+            to_json(b.booking_date) booking_date,
             b.booking_code,
             b.booking_price,
             b.booking_currency,
@@ -171,7 +171,7 @@ exports.bookingFetch = async (pool, bookingId, userId) => {
     SELECT
         b.id id,
         p.id plan_id,
-        b.booking_date,
+        to_json(b.booking_date) booking_date,
         b.booking_code,
         b.booking_price,
         b.booking_currency,
@@ -198,10 +198,10 @@ exports.bookingFetch = async (pool, bookingId, userId) => {
         b.id booking_id,
         p.id plan_id,
         l.type,
-        l.departure_time,
+        to_json(l.departure_time) departure_time,
         l.departure_name,
         l.departure_iata_code,
-        l.arrival_time,
+        to_json(l.arrival_time) arrival_time,
         l.arrival_name,
         l.arrival_iata_code,
         l.trip_number,
