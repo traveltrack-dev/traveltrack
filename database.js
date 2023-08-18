@@ -114,8 +114,8 @@ exports.plansFetch = async (pool, userId) => {
         SELECT
             p.id,
             p.name,
-            p.start_date,
-            p.end_date,
+            to_json(p.start_date) start_date,
+            to_json(p.end_date) end_date,
             encode(p.photo_data, 'base64') photo_data,
             p.photo_mime_type,
             p.photo_filename,

@@ -13,11 +13,12 @@ module.exports = app => {
     console.debug(`fetching plans for user ${user.username} with id ${user.id}...`);
     const db = app.get('db');
     let plans = await database.plansFetch(db.pool, user.id);
+    console.log(plans);
     plans = plans.map(plan => {
       return {
         header: plan.name,
         text: [
-          `${DateTime.fromJSDate(plan.start_date).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED)} → ${DateTime.fromJSDate(plan.end_date).setZone(user.timezone).toLocaleString(DateTime.DATETIME_MED)}`,
+          `${DateTime.fromISO(plan.start_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED)} → ${DateTime.fromISO(plan.end_date, { zone: 'UTC' }).setZone(user.timezone).toLocaleString(DateTime.DATE_MED)}`,
           plan.operators,
         ],
         link: `/plans/${plan.id}`,
