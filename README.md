@@ -26,7 +26,7 @@ This is not a useful project at the moment. All it provides is the ability to vi
 
 Data within each itinerary (such as bookings, segments of each booking) can also be viewed, but TravelTrack uses a simple debug view to display this.
 
-tl;dr Do not use this right now.
+**tl;dr** Do not use this right now (but feel free to bookmark the project and contact info@traveltrack.dev if you have any questions).
 
 ## Requirements
 
@@ -59,3 +59,17 @@ Set the following environment variables (or create a .env file) with the followi
 * `PUBLIC_URL`: Base URL of the web app, defaults to `http://localhost:PORT`
 * `SECRET`: Secret to sign and verify cookies, defaults to `secret`
 * `SESSION_LENGTH`: Session duration in minutes, defaults to `1440`
+
+## Start the project
+
+1. Clone the GitHub repository
+2. Enter the newly created directory
+3. Install dependencies
+4. Start the app
+
+```bash
+git clone git@github.com:traveltrack-dev/traveltrack.git
+cd traveltrack
+npm install
+npm start
+```
