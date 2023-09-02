@@ -1,9 +1,37 @@
 # traveltrack
+
 Manage all your itineraries in a single, clean interface. Keep all your receipts and tickets in one place.
+
+## Plans
+
+This project will eventually become an open source replacement for tools like TripIt, Tripcase and Kayak Trips. Travel data is quite sensitive and shouldn't have to be shared with and analysed by companies.
+
+I also plan to implement features that are currently missing from existing tools, and I want to focus specifically on these aspects:
+
+### Manual editing capabilities
+
+Current tools rely heavily on forwarding email booking confirmations, which are then automatically parsed. This process is somewhat fragile and will break if the layout of such messages changes or an unexpected value appears somewhere. It also won't work if bookings are made via channels that don't result in an email confirmation. For these cases, I want to make it as easy as possible to manually edit schedules and remove arbritrary restrictions imposed by existing tools.
+
+### Eco-friendly travel
+
+The tools I have tested so far struggle with bus and train connections. Even where they can theoretically be added, it is usually cumbersome and awkward to add, retrieve and edit such information, as most of the existing logic is focused on air travel. I plan to make environmentally friendly alternatives first class entities, with station locations and connection information properly displayed.
+
+## Status
+
+Although this is a project I've wanted to start for a long time, I don't have much time for it at the moment, as I have a rather demanding job that leaves me with little energy to work on traveltrack.
+
+This is not a useful project at the moment. All it provides is the ability to view itineraries:
+
+![Screenshot](docs/img/screenshot.png)
+
+Data within each itinerary (such as bookings, segments of each booking) can also be viewed, but TravelTrack uses a simple debug view to display this.
+
+tl;dr Do not use this right now.
 
 ## Requirements
 
 ### PostgreSQL
+
 traveltrack requires a PostgreSQL database to function. I am developing traveltrack on version 15, though older (and newer) versions should work fine as well. For testing purposes, spin up a PostgreSQL database using the following command:
 
 ```bash
@@ -11,12 +39,15 @@ docker run -it --rm --name traveltrack-postgres -e POSTGRES_USER=traveltrack -e 
 ```
 
 ### Node.js
+
 As an Express.js application, traveltrack requires [Node.js](https://nodejs.org/) to function. It is being built using Node.js 18 (the current LTS version), though many older (and newer) versions should work as well. You can find installation instructions on the Node.js website.
 
 ### Dependencies
+
 traveltrack comes with a few common dependencies, like the hbs view engine, Tailwind CSS + daisyUI and node-postgres. To install them, run `npm install`.
 
 ### Configuration
+
 Set the following environment variables (or create a .env file) with the following values:
 
 * `DB_HOST`: PostgreSQL host, defaults to `localhost`
