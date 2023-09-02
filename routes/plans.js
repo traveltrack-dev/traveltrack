@@ -13,7 +13,6 @@ module.exports = app => {
     console.debug(`fetching plans for user ${user.username} with id ${user.id}...`);
     const db = app.get('db');
     let plans = await database.plansFetch(db.pool, user.id);
-    console.log(plans);
     plans = plans.map(plan => {
       return {
         header: plan.name,
